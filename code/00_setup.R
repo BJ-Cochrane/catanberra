@@ -5,9 +5,26 @@ pacman::p_load(
   absmapsdata,
   rnaturalearth,
   rnaturalearthdata,
-  magick
+  magick,
+  raster,
+  tiff,
+  terra,
+  rmapshaper,
+  rasterVis
 )
 
+shp <-
+read_sf(dsn = "data/aus_land_use/shapefile_currency_clum_50m0917m/currency_clum_50m0917.shp") %>%
+  filter(scale == "1:250 000") %>%
+  filter(date == max(date))
+
+
+shp %>%
+  slice(2) %>%
+  ggplot()+
+  geom_sf()
+
+###### Make hex
 
 aus <- ne_countries(scale ='large',
                     country = 'Australia',
@@ -123,7 +140,7 @@ map_data$tile <- centroids$tile
   guides(colour = "none")+
   labs(fill = '',
        shape = '',
-       title = "Settlers of Catanberra")
+       title = "CATANberra")
 
 
 
