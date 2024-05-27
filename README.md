@@ -1,3 +1,3 @@
 # Generates a map of Australia (and individual states and territories) in the style of Settlers of Catan
 
-![map](CATANberra_draft.png)
+![map](CATANberra_draft_2.png)

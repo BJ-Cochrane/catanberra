@@ -1,6 +1,6 @@
 ## make bulk maps
 read_land_use(1)
- v  read_land_use(1.5)
+read_land_use(1.5)
 read_land_use(2)
 read_land_use(2.5)
 read_land_use(2.9,-41,-37.5)

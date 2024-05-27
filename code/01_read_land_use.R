@@ -29,7 +29,7 @@ aus_points <- sf::st_as_sf(aus_raster_points, coords = c("x", "y")) %>%
   randomise_land_use() %>%
   st_as_sf()
 
-read_land_use <- function(cell_size = 1.5,
+read_land_use <- function(cell_size = 2.5,
                           bass_min = -41,
                           bass_max = -39){
 
@@ -84,7 +84,7 @@ land_concord %>%
 
 aus_points$land_use_descrip <- factor(aus_points$land_use_descrip, levels =raster_colours$land_use_descrip)
 
-catan_colors <- c(
+catan_colours <- c(
   red = "#A62C2B",   # Deep red
   yellow = "#FFCE00", # Bright yellow
   green = "#8C977D",  # Olive green
@@ -92,11 +92,11 @@ catan_colors <- c(
 )
 
 gradient_background <- rasterGrob(
-  colorRampPalette(c(catan_colors["red"], catan_colors["yellow"]))(256),
+  colorRampPalette(c(catan_colours["red"], catan_colours["yellow"]))(256),
   width = unit(1, "npc"), height = unit(1, "npc")
 )
 
-# map_out <-
+map_out <-
 ggplot() +
   annotation_custom(gradient_background, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)+
   geom_sf(
@@ -119,29 +119,37 @@ ggplot() +
   labs(
     fill = "",
     shape = "",
-    title = "<span style='font-size:30pt'><span style='color:#f8ce06;'>**CATAN**</span>berra</span>",
+    title = "<span style='font-size:40pt'><span style='color:#f8ce06;'>**CATAN**</span>berra</span>",
     caption = 'Using ABARES 2022, Land use of Australia 2010-11 to 2015-16, 250m @BenCochraneR',
     x = NULL,
     y = NULL
   )+
   theme_void()+
   theme(plot.title = element_markdown(lineheight = 1.1,colour = 'white'),
-          panel.background = element_rect(fill = catan_colors["red"]),
-          axis.title.x = element_text(size = 15, color = "white"),
-          axis.title.y = element_text(size = 15, color = "white"),
-          axis.text.x = element_text(size = 12, color =catan_colors['red']),
-          axis.text.y = element_text(size = 12, color =catan_colors['red']),
-          panel.grid = element_blank(),
-        plot.background = element_rect(fill = catan_colors['red'], color = catan_colors["yellow"], size = 3),
+        panel.background = element_rect(fill = catan_colours["red"], colour = catan_colours['red']),
+        axis.title.x = element_text(size = 15, color = "white"),
+        axis.title.y = element_text(size = 15, color = "white"),
+        axis.text.x = element_text(size = 12, color =catan_colours['red']),
+        axis.text.y = element_text(size = 12, color =catan_colours['red']),
+        panel.grid = element_blank(),
+        panel.border = element_blank(),
+        plot.background = element_rect(fill = catan_colours['red'], color = catan_colours["yellow"], size = 3),
         axis.text = element_blank(),
         axis.line = element_blank(),
         legend.text = element_text(size = 12, color = "white", face = 'bold'), # Increase legend text size
-        legend.key.size = unit(0.75, "cm"),
+        legend.key.size = unit(30, "cm"),
         legend.key.width = unit(0.75, "cm"),
         legend.key.height = unit(0.75, "cm"),
+        legend.byrow = TRUE,
+        legend.frame = element_rect(colour = 'black'),
+        legend.direction = 'horizontal',
+        legend.position = 'top',
+        legend.key.spacing.y = unit(-0.05,'cm'),
         plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
-        plot.caption = element_text(size = 10, colour = 'white', face = 'italic')
-        )
+        plot.caption = element_text(size = 10, colour = 'white', face = 'italic'),
+
+
+          )
 
 return(map_out)
 }
