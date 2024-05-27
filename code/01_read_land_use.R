@@ -56,15 +56,16 @@ catan_map <-
   st_join(hex_count) %>%
   mutate(catan_use = ifelse(is.na(catan_use), 'Lumber', catan_use))
 
+suppressWarnings(
 centroids <-
   catan_map %>%
   sf::st_centroid() %>%
   sf::st_coordinates() %>%
-  as.data.frame()
+  as.data.frame())
 
 centroids$catan_use <- catan_map$catan_use
 
-## remove tasmania
+## remove bass strait
 centroids <-
   centroids %>%
   filter(!between(Y, bass_min, bass_max))
