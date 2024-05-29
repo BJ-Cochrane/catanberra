@@ -12,6 +12,7 @@ pacman::p_load(
   rmapshaper,
   rasterVis,
   ggtext,
+  geosphere,
   grid
 )
 
@@ -22,23 +23,25 @@ aus <- ne_countries( country = 'Australia',
   st_geometry() %>%
   # st_transform('EPSG:3577') %>%
   st_crop(
-    xmin = 108,
-    xmax = 155,
-    ymin = -47,
-    ymax = -7
+    xmin = 100,
+    xmax = 160,
+    ymin = -50,
+    ymax = -5
   )
 
 
-make_hex_grid_aus <- function(cell_size = 2) {
+make_hex_grid_aus <- function(cell_size = 1) {
   hexgrid <-
     st_make_grid(aus,
       cellsize = cell_size,
       what = "polygons",
       square = FALSE
     ) %>%
-    st_as_sf()
+    st_as_sf() %>%
+    mutate(hex_id = row_number())
 
-  hexgrid_aus <- hexgrid[aus, ]
+  hexgrid_aus <- hexgrid %>%
+    mutate(is_aus = st_intersects(., aus, sparse = FALSE))
 
   centroids <-
     hexgrid_aus %>%
@@ -51,8 +54,7 @@ make_hex_grid_aus <- function(cell_size = 2) {
 
   hexgrid_aus <-
     hexgrid_aus %>%
-    rename("geometry" = x) %>%
-    mutate(hex_id = row_number())
+    rename("geometry" = x)
 
   return(hexgrid_aus)
 }

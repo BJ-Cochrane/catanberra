@@ -29,16 +29,20 @@ aus_points <- sf::st_as_sf(aus_raster_points, coords = c("x", "y")) %>%
   randomise_land_use() %>%
   st_as_sf()
 
-read_land_use <- function(cell_size = 2.5,
+read_land_use <- function(cell_size = 1,
                           bass_min = -41,
                           bass_max = -39){
 
-hex_grid <- make_hex_grid_aus(cell_size)
+hex_grid <- make_hex_grid_aus(cell_size) %>%
+  find_ports()
+
+hex_grid_aus <- hex_grid %>% filter(is_aus == TRUE | is_port == TRUE)
+
 
 joined <-
   aus_points %>%
-  st_transform(crs = st_crs(hex_grid)) %>%
-  st_join(hex_grid, left = TRUE) %>%
+  st_transform(crs = st_crs(hex_grid_aus)) %>%
+  st_join(hex_grid_aus, left = TRUE) %>%
   dplyr::select(-lng, -lat)
 
 ## Get most frequent use by hex
@@ -52,7 +56,7 @@ hex_count <-
   dplyr::select(-hex_id)
 
 catan_map <-
-  hex_grid %>%
+  hex_grid_aus %>%
   st_join(hex_count) %>%
   mutate(catan_use = ifelse(is.na(catan_use), 'Lumber', catan_use))
 
