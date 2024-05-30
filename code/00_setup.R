@@ -13,7 +13,8 @@ pacman::p_load(
   rasterVis,
   ggtext,
   geosphere,
-  grid
+  grid,
+  ggpubr
 )
 
 

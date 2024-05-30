@@ -29,7 +29,7 @@ aus_points <- sf::st_as_sf(aus_raster_points, coords = c("x", "y")) %>%
   randomise_land_use() %>%
   st_as_sf()
 
-read_land_use <- function(cell_size = 1,
+read_land_use <- function(cell_size = 2.5,
                           bass_min = -41,
                           bass_max = -39){
 
@@ -74,11 +74,11 @@ centroids$catan_use <- catan_map$catan_use
 ## remove bass strait
 centroids <-
   centroids %>%
-  filter(!between(Y, bass_min, bass_max))
+  filter(!between(Y, {bass_min}, {bass_max}))
 
 map_data <-
   catan_map %>%
-  filter(!between(lat, bass_min, bass_max))
+  filter(!between(lat, {bass_min}, {bass_max}))
 
 
 map_data$catan_use <- centroids$catan_use
@@ -105,7 +105,7 @@ gradient_background <- rasterGrob(
 
 anchor <- '⚓'
 
-# map_out <-
+map_out <-
 ggplot() +
   annotation_custom(gradient_background, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)+
   geom_sf(
@@ -122,8 +122,8 @@ ggplot() +
     size = 4.5
   ) +
 
-  geom_sf(data = ports_hex, fill = 'blue', alpha = 0.5)+
-  geom_sf(data = ports_points, shape = anchor,  size = 4.5)+
+  # geom_sf(data = ports_hex, alpha = 0.1)+
+  geom_sf(data = ports_points, shape = anchor, colour = 'black',  size = 4.5, alpha = 0.4)+
 
 
   scale_shape_manual(values = tiles$icon) +
@@ -134,7 +134,7 @@ ggplot() +
     fill = "",
     shape = "",
     title = "<span style='font-size:40pt'><span style='color:#f8ce06;'>**CATAN**</span>berra</span>",
-    caption = 'Using ABARES 2022, Land use of Australia 2010-11 to 2015-16, 250m @BenCochraneR',
+    caption = 'Using ABARES 2022, Satellite data, land use of Australia 2015-16; \n @BenCochraneR',
     x = NULL,
     y = NULL
   )+
@@ -159,7 +159,7 @@ ggplot() +
         legend.direction = 'horizontal',
         legend.position = 'top',
         legend.key.spacing.y = unit(-0.05,'cm'),
-        plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
+        plot.margin = unit(c(0.5, 1.5, 0.5, 0.2), "cm"),
         plot.caption = element_text(size = 10, colour = 'white', face = 'italic'),
 
 

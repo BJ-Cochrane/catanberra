@@ -1,0 +1,13 @@
+name: catanberra
+title: catanberra
+username: bcochrane
+account: bcochrane
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 12094914
+bundleId: 8678716
+url: https://bcochrane.shinyapps.io/catanberra/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: CATANberra_draft.png|CATANberra_draft_2.png|code/00_setup.R|code/01_read_land_use.R|code/02_find_ports.R|code/03_make_maps.R|README.md|Rplot.png|Rplot01.png|Rplot02.png|Rplot03.png|Rplot04.png|Rplot05.png|Rplot06.png|Rplot07.png|Rplot08.png|Rplot09.png|Rplot10.png|Rplot11.png|Rplot12.png|Rplot13.png|Rplot14.png|Rplot15.png|Rplot16.png|Rplot17.png|Rplot18.png|Rplot19.png|test.R|data|output
