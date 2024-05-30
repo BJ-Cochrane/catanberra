@@ -33,11 +33,13 @@ read_land_use <- function(cell_size = 1,
                           bass_min = -41,
                           bass_max = -39){
 
-hex_grid <- make_hex_grid_aus(cell_size) %>%
-  find_ports()
+hex_grid_aus <- make_hex_grid_aus(cell_size)
 
-hex_grid_aus <- hex_grid %>% filter(is_aus == TRUE | is_port == TRUE)
+ports_hex <- find_ports(hex_grid_aus)
+ports_points <- find_ports(hex_grid_aus) %>% st_centroid()
 
+hex_grid_aus <- make_hex_grid_aus(cell_size) %>%
+  filter(is_aus == TRUE)
 
 joined <-
   aus_points %>%
@@ -101,7 +103,9 @@ gradient_background <- rasterGrob(
   width = unit(1, "npc"), height = unit(1, "npc")
 )
 
-map_out <-
+anchor <- '⚓'
+
+# map_out <-
 ggplot() +
   annotation_custom(gradient_background, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)+
   geom_sf(
@@ -117,6 +121,11 @@ ggplot() +
     ),
     size = 4.5
   ) +
+
+  geom_sf(data = ports_hex, fill = 'blue', alpha = 0.5)+
+  geom_sf(data = ports_points, shape = anchor,  size = 4.5)+
+
+
   scale_shape_manual(values = tiles$icon) +
   scale_fill_manual(values = tiles$fill) +
   scale_colour_manual(values = tiles$colour) +
